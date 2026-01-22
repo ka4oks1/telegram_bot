@@ -1,0 +1,5 @@
+package mymemory
+
+func mymem() {
+
+}
