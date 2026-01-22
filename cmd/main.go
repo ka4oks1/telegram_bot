@@ -10,7 +10,7 @@ import (
 
 func main() {
 
-	resp, err := http.Get("https://google.com")
+	resp, err := http.Get("https://zenquotes.io/api/random")
 
 	if err != nil {
 
@@ -20,17 +20,40 @@ func main() {
 
 	defer resp.Body.Close()
 
+	//var finalstr string
+
 	for true {
 
 		bs := make([]byte, 1014)
 		n, err := resp.Body.Read(bs)
 
-		str := fmt.Sprintln(string(bs[:n]))
+		str := fmt.Sprint(string(bs[:n]))
+
+		startQuote := []rune{'"', 'q', '"'}
+
+		endQuote := []rune{'"', 'a', '"'}
+
+		currStack := make([]rune, 3, 3)
+
+		var quote string
+
+		for _, v := range str {
+
+			if currStack[0] == startQuote[0] && currStack[1] == startQuote[1] && currStack[2] == startQuote[2] {
+				quote += string(v)
+			}
+
+			if currStack[0] == endQuote[0] && currStack[1] == endQuote[1] && currStack[2] == endQuote[2] {
+				break
+			}
+
+		}
 
 		fmt.Println(string(bs[:n]))
 
 		file, fileErr := os.OpenFile("../HTTP_req.txt", os.O_RDWR, 0644)
-		file.WriteString(str + "\n")
+
+		file.WriteString(str)
 
 		if fileErr != nil {
 			fmt.Println("fileErr")
