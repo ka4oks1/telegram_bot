@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"strings"
 )
 
 // main bot file
@@ -13,59 +14,56 @@ func main() {
 	resp, err := http.Get("https://zenquotes.io/api/random")
 
 	if err != nil {
-
-		fmt.Println("Something went wrong")
-
+		fmt.Println("Error while server response waiting")
 	}
 
 	defer resp.Body.Close()
 
-	//var finalstr string
+	for {
 
-	for true {
+		byteSet := make([]byte, 1014)
+		bytesRead, err := resp.Body.Read(byteSet)
 
-		bs := make([]byte, 1014)
-		n, err := resp.Body.Read(bs)
+		str := fmt.Sprint(string(byteSet[:bytesRead]))
 
-		str := fmt.Sprint(string(bs[:n]))
+		startQuote := "\"q\":\""
 
-		startQuote := []rune{'"', 'q', '"'}
+		endQuoteStartAuthor := "\",\"a\":\""
 
-		endQuote := []rune{'"', 'a', '"'}
+		endAuthor := "\",\"h\":\""
 
-		currStack := make([]rune, 3, 3)
+		sQindex := strings.Index(string(byteSet[:bytesRead]), startQuote)
 
-		var quote string
+		eQsAindex := strings.Index(string(byteSet[:bytesRead]), endQuoteStartAuthor)
 
-		for _, v := range str {
+		eAindex := strings.Index(string(byteSet[:bytesRead]), endAuthor)
 
-			if currStack[0] == startQuote[0] && currStack[1] == startQuote[1] && currStack[2] == startQuote[2] {
-				quote += string(v)
-			}
-
-			if currStack[0] == endQuote[0] && currStack[1] == endQuote[1] && currStack[2] == endQuote[2] {
-				break
-			}
-
-		}
-
-		fmt.Println(string(bs[:n]))
+		//	fmt.Println(string(byteSet[:bytesRead]))
 
 		file, fileErr := os.OpenFile("../HTTP_req.txt", os.O_RDWR, 0644)
 
-		file.WriteString(str)
-
 		if fileErr != nil {
-			fmt.Println("fileErr")
+			fmt.Println("Error when opening file")
 		}
 
 		defer file.Close()
-		if n == 0 || err != nil {
+
+		if bytesRead == 0 || err != nil {
 			break
+		} else {
+
+			quote := string(byteSet[sQindex+len(startQuote) : eQsAindex])
+			author := string(byteSet[eQsAindex+len(endQuoteStartAuthor) : eAindex])
+
+			fmt.Printf("\"%s\"\n", quote)
+			fmt.Printf("Author is %s", author)
+
+			_, writeErr := file.WriteString(str)
+			if writeErr != nil {
+				fmt.Println("Error while writing in file")
+			}
+
 		}
 	}
-	//fmt.Println("Hey man i am bot")
-
-	//client := &http.Client{}
 
 }
