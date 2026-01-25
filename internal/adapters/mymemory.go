@@ -1,5 +1,6 @@
-package mymemory
+package adapters
 
-func mymem() {
+func abao() {
 
+	Hello()
 }

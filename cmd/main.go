@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"main/internal/adapters"
 	"net/http"
 	"os"
 	"strings"
@@ -10,6 +11,8 @@ import (
 // main bot file
 
 func main() {
+
+	adapters.Hello()
 
 	resp, err := http.Get("https://zenquotes.io/api/random")
 
@@ -62,7 +65,6 @@ func main() {
 			if writeErr != nil {
 				fmt.Println("Error while writing in file")
 			}
-
 		}
 	}
 
