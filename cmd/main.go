@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"main/internal/adapters"
 	"net/http"
 	"os"
 	"strings"
@@ -11,8 +10,6 @@ import (
 // main bot file
 
 func main() {
-
-	adapters.Hello()
 
 	resp, err := http.Get("https://zenquotes.io/api/random")
 
@@ -24,7 +21,7 @@ func main() {
 
 	for {
 
-		byteSet := make([]byte, 1014)
+		byteSet := make([]byte, 1024)
 		bytesRead, err := resp.Body.Read(byteSet)
 
 		str := fmt.Sprint(string(byteSet[:bytesRead]))
@@ -43,7 +40,7 @@ func main() {
 
 		//	fmt.Println(string(byteSet[:bytesRead]))
 
-		file, fileErr := os.OpenFile("../HTTP_req.txt", os.O_RDWR, 0644)
+		file, fileErr := os.OpenFile("../HTTP_resp.txt", os.O_RDWR, 0644)
 
 		if fileErr != nil {
 			fmt.Println("Error when opening file")
