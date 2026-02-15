@@ -1,6 +1,10 @@
 package adapters
 
-func abao() {
+// func makeHumanReadable(rawStr string) string {
 
-	Hello()
-}
+// }
+
+// func TranslateSomething(english string) (russian string) {
+
+// 	return russian
+// }
