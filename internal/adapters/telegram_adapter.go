@@ -2,9 +2,10 @@ package adapters
 
 import (
 	"fmt"
-	"github.com/go-telegram-bot-api/telegram-bot-api"
 	"log"
 	"os"
+
+	_ "github.com/go-telegram-bot-api/telegram-bot-api"
 )
 
 func TelegramAdapterInitialization(logSource string) error {
