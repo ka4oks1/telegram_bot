@@ -4,7 +4,8 @@ import (
 	"fmt"
 	"log"
 	"os"
-	//"github.com/go-telegram-bot-api/telegram-bot-api"
+
+	_ "github.com/go-telegram-bot-api/telegram-bot-api"
 )
 
 func TelegramAdapterInitialization(logSource string) error {
