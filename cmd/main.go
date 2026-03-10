@@ -38,18 +38,19 @@ func getQuoteInfo(byteSet []byte, startQuoteInd int, endQuoteStartInd int, endAu
 	return quote, author
 }
 
-func mainInitialization(logSourceName string) error {
+func mainInitialization(adap *adapters.TgAdapter, logSourceName string) error {
 	//	collect all errors
-	var err error
-	errTelegramAdap := adapters.TelegramAdapterInitialization(logSourceName)
-	err = errors.Join(errTelegramAdap)
+	var fileMaxLength int64 = 65536
+	errTelegramAdap := adap.Initialization(logSourceName, fileMaxLength)
+	err := errors.Join(errTelegramAdap)
 	return err
 }
 
 func main() {
 	//add database adding info about authors
+	tgAdapter := adapters.TgAdapter{}
 
-	initErrors := mainInitialization(logFileName)
+	initErrors := mainInitialization(&tgAdapter, logFileName)
 
 	if initErrors != nil {
 		panic("initialization errors")

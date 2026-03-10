@@ -1,6 +1,10 @@
+# config v0.0.0-00010101000000-000000000000 => ../config
+## explicit; go 1.25.0
+config
 # github.com/go-telegram-bot-api/telegram-bot-api v4.6.4+incompatible
 ## explicit
 github.com/go-telegram-bot-api/telegram-bot-api
 # github.com/technoweenie/multipartstreamer v1.0.1
 ## explicit
 github.com/technoweenie/multipartstreamer
+# config => ../config
