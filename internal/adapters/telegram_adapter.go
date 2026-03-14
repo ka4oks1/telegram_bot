@@ -1,11 +1,10 @@
 package adapters
 
 import (
-	"config"
 	"fmt"
-	"github.com/go-telegram-bot-api/telegram-bot-api"
 	"log"
 	"os"
+	"telegram_bot/config"
 )
 
 type Adapter interface {
@@ -19,12 +18,12 @@ func (tg *TgAdapter) Initialization(saverPath string, fileCap int64) error {
 
 	file, err := os.OpenFile(saverPath, os.O_RDWR|os.O_APPEND|os.O_CREATE, 0644)
 
-	//tg.saver = config.FileSaver{
-	//	Path:      saverPath,
-	//	MaxWeight: fileCap,
-	//}
-
-	bot, botErr := tgbotapi.NewBotAPI("asd")
+	tg.saver = config.FileSaver{
+		Saver:     nil,
+		Path:      saverPath,
+		MaxWeight: fileCap,
+		Weight:    0,
+	}
 
 	if err != nil {
 

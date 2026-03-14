@@ -1,12 +1,12 @@
 package main
 
 import (
-	"adapters"
 	"errors"
 	"fmt"
 	"net/http"
 	"os"
 	"strings"
+	"telegram_bot/internal/adapters"
 )
 
 // main bot file
