@@ -4,13 +4,26 @@ import (
 	"fmt"
 	"log"
 	"os"
-
-	_ "github.com/go-telegram-bot-api/telegram-bot-api"
+	"telegram_bot/config"
 )
 
-func TelegramAdapterInitialization(logSource string) error {
+type Adapter interface {
+	Initialization(logSource string) error
+}
+type TgAdapter struct {
+	saver config.FileSaver
+}
 
-	file, err := os.OpenFile(logSource, os.O_RDWR|os.O_APPEND|os.O_CREATE, 0644)
+func (tg *TgAdapter) Initialization(saverPath string, fileCap int64) error {
+
+	file, err := os.OpenFile(saverPath, os.O_RDWR|os.O_APPEND|os.O_CREATE, 0644)
+
+	tg.saver = config.FileSaver{
+		Saver:     nil,
+		Path:      saverPath,
+		MaxWeight: fileCap,
+		Weight:    0,
+	}
 
 	if err != nil {
 
@@ -23,9 +36,5 @@ func TelegramAdapterInitialization(logSource string) error {
 	log.SetOutput(file)
 
 	return err
-
-}
-
-func TelegramAdapter(logSource string) {
 
 }
